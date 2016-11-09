@@ -1,7 +1,9 @@
 package InputOutput;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileReaderWriter {
@@ -11,24 +13,26 @@ public class FileReaderWriter {
 	}
 
 	public static void ReadWrite(String[] args){
-		try(FileOutputStream out = new FileOutputStream(args[2]);
-		        FileInputStream in1 = new FileInputStream(args[0]);
-		        FileInputStream in2 = new FileInputStream(args[1])){
+
+		try(BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+			BufferedReader reader1 = new BufferedReader(new FileReader(args[1]));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(args[2]))){
 			
-			while(in1.available() > 0){
-				byte[] buffer = new byte[in1.available()];
-				int count = in1.read(buffer);
-				out.write(buffer, 0, count);
+			String line;
+			while((line = reader.readLine()) != null){
+				writer.write(line);
+				writer.newLine();
 			}
 			
-			while(in2.available() > 0){
-				byte[] buffer = new byte[in2.available()];
-				int count = in2.read(buffer);
-				out.write(buffer, 0, count);
-			}
+			writer.newLine();
+			
+			while((line = reader1.readLine()) != null){
+				writer.write(line);
+				writer.newLine();
+			}			
 			
 		} catch(IOException e){
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }
